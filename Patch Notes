@@ -1,0 +1,16 @@
+Version 1.0:
+
+Basic functionality implemented. Program generates a fully solved puzzle, then randomly hides numbers from the player.
+Supports player input for numbers 1-9.
+Inputting the number 0 will erase selected tile.
+
+Version 2.0:
+
+Updated the program to include basic 'note taking' functionality found in most digital versions of sudoku. 
+By clicking the orange button to the left of the sudoku grid, the player can toggle 'note taking' on and off. 
+The button is defaulted to off.
+
+Version 2.1:
+
+Fixed small bug with note taking feature where if the player were to input a number, erase said number, then attempt to input notes in the same tile, no notes would be displayed.
+Also improved note taking feature by allowing player to input a number a second time to remove the note for that specific number, instead of requiring the player to 'zero out' the entire tile every time.
