@@ -114,7 +114,12 @@
 						var testX = findBox(number-1)*(1/3);
 						var testY = number-findBox(number-1)-1;
 						
-						noteArray[coordY][coordX][testX][testY] = 1;
+						if(noteArray[coordY][coordX][testX][testY] == 1) {
+							noteArray[coordY][coordX][testX][testY] = 0;
+						}
+						else {
+							noteArray[coordY][coordX][testX][testY] = 1;
+						}
 					}
 				}
 			}
@@ -462,6 +467,7 @@
 					else if(playerInput[i][j] == 0){
 						clearNotes(i, j);
 						hideNum[i][j] = 1;
+						playerInput[i][j] = -1;
 					}
 				}
 			}
