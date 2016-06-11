@@ -20,3 +20,4 @@ Version 3.0:
 Added a basic timer to keep allow players to keep track of how long it takes to solve each puzzle.
 Included 30 second penalty for inputting wrong answers.
 Tweaked colors a bit, lowered alpha levels of given tiles, making the blue less harsh compared to the rest of the game.
+Also tweaked mouse detection code for the 'notes' button, as I am encountering an inconsistent bug where the button will not work on some computers but works just fine on others.
