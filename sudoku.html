@@ -58,6 +58,17 @@
 		var global_Red = 0;
 		var global_Green = 0;
 		var global_Blue = 0;
+
+
+		var countSecA = 0;
+		var countSecB = 0;
+		var countMinA = 0;
+		var countMinB = 0;
+		var countHour = 0;
+		var tempHourA = 0;
+		var tempHourB = 0;
+
+		var penalty = 30;
 		
 //*****************************************************************
 
@@ -105,6 +116,11 @@
 			if(coordX < 10 && coordY < 10){
 				if(notesON == false){
 					playerInput[coordY][coordX] = number;
+					if(playerInput[coordY][coordX] != matrix[coordY][coordX] && playerInput[coordY][coordX] != 0) {
+						for(numI=0; numI<penalty; numI++){
+							countClock();
+						}
+					}
 				}
 				else {
 					if(number == 0){
@@ -113,12 +129,12 @@
 					else {
 						var testX = findBox(number-1)*(1/3);
 						var testY = number-findBox(number-1)-1;
-						
-						if(noteArray[coordY][coordX][testX][testY] == 1) {
-							noteArray[coordY][coordX][testX][testY] = 0;
+
+						if(noteArray[coordY][coordX][testX][testY] == 0){
+							noteArray[coordY][coordX][testX][testY] = 1;
 						}
 						else {
-							noteArray[coordY][coordX][testX][testY] = 1;
+							noteArray[coordY][coordX][testX][testY] = 0;
 						}
 					}
 				}
@@ -186,14 +202,63 @@
 		function setAlpha(numX, numY) {
 		
 			if(numX == getCoordX() && numY == getCoordY()){
-				boxAlpha = .3;
+				boxAlpha = .45;
 			}
 			else {
-				boxAlpha = .05;
+				boxAlpha = .07;
 			}
 		
 		}
 
+
+//*****************************************************************
+
+		function countClock() {
+
+			countSecB++;
+			if(countSecB > 9){
+				countSecB = 0;
+				countSecA++;
+			}
+			if(countSecA > 5){
+				countSecA = 0;
+				countMinB++;
+			}
+			if(countMinB > 9){
+				countMinB = 0;
+				countMinA++;
+			}
+			if(countMinA > 5){
+				countMinA = 0;
+				countHour++;
+				tempHourB++;
+			}
+			if(tempHourB > 9){
+				tempHourB = 0;
+				tempHourA++;
+			}
+			if(countHour > 11){
+				tempHourB = 0;
+				tempHourA = 0;
+				countHour = 0;
+			}
+
+		}
+
+
+//*****************************************************************
+
+		function initializeClock() {
+
+			countSecA = 0;
+			countSecB = 0;
+			countMinA = 0;
+			countMinB = 0;
+			countHour = 0;
+			tempHourA = 0;
+			tempHourB = 0;
+
+		}
 
 //*****************************************************************
 
@@ -500,6 +565,23 @@
 
 //*****************************************************************
 
+		function drawClock() {
+
+			 var slightOffset = 8;
+
+			drawNumber(":", gridHOffset+(barOffset*10.35), (canvasHeight/2)-(barOffset/2)+slightOffset, global_Red, global_Green, global_Blue, 1);
+
+			drawNumber(countSecA, gridHOffset+(barOffset*10.7), (canvasHeight/2)-(barOffset/2)+slightOffset, global_Red, global_Green, global_Blue, 1);
+			drawNumber(countSecB, gridHOffset+(barOffset*11.2), (canvasHeight/2)-(barOffset/2)+slightOffset, global_Red, global_Green, global_Blue, 1);
+
+			drawNumber(countMinA, gridHOffset+(barOffset*9.5), (canvasHeight/2)-(barOffset/2)+slightOffset, global_Red, global_Green, global_Blue, 1);
+			drawNumber(countMinB, gridHOffset+(barOffset*10), (canvasHeight/2)-(barOffset/2)+slightOffset, global_Red, global_Green, global_Blue, 1);
+
+		}
+
+
+//*****************************************************************
+
 		function drawButton() {
 		
 			var Red = global_Red;
@@ -529,7 +611,7 @@
 		
 			for(i=gridHOffset-(barOffset*2.5); i<(gridHOffset-(barOffset*2.5)+(barOffset*2)); i++){
 				for(j=(canvasHeight/2)-(barOffset/2); j<((canvasHeight/2)-(barOffset/2)+barOffset); j++){
-					if(posx == i && posy == j){
+					if(Math.floor(posx) == i && Math.floor(posy) == j){
 						if(notesON == true){
 							notesON = false;
 						}
@@ -559,8 +641,6 @@
 			var a = 1;
 
 			if(num == 0){
-				r = 255;
-			
 				drawRect(numX, numY, size, height, r, g, b, a);
 				drawRect(numX, numY, width, size, r, g, b, a);
 				drawRect(numX+hOffset, numY, size, height, r, g, b, a);
@@ -620,6 +700,10 @@
 				drawRect(numX, numY+(vOffset/2), width, size, r, g, b, a);
 				drawRect(numX+hOffset, numY, size, height, r, g, b, a);
 			}
+			else if(num == ":"){
+				drawRect(numX+(hOffset/2), numY+(vOffset/4), size, size, r, g, b, a);
+				drawRect(numX+(hOffset/2), numY+(vOffset*3/4), size, size, r, g, b, a);
+			}
 
 		}
 
@@ -653,6 +737,7 @@
 			drawInput();
 			drawNotes();
 			drawButton();
+			drawClock();
 			drawGrid();
 		
 		}
@@ -663,6 +748,7 @@
 	initializeHiddenNumbers();
 	initializePlayerInput();
 	initializeNotes();
+	initializeClock();
 	do {
 		initializeMatrix();
 		generatePuzzle();
@@ -670,6 +756,7 @@
 	while(puzGenSuccess == false);
 	
 	setInterval(function(){draw()}, 10);
+	setInterval(function(){countClock()}, 1000);
 	
 
 	</script>
